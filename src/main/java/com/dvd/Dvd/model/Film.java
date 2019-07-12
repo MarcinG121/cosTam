@@ -23,6 +23,7 @@ public class Film {
                     joinColumns = @JoinColumn(name = "filmId"),
                     inverseJoinColumns = @JoinColumn(name = "actorId")
             )
+    @JsonManagedReference
     private List<Actor> actors;
     @ManyToMany
     @JoinTable(
@@ -39,6 +40,17 @@ public class Film {
         this.actors = actors;
         this.filmCategories = categories;
     }
+
+    public void addActor(Actor actor) {
+        this.actors.add(actor);
+    }
+
+//    @PostPersist
+//    public void populateActors() {
+//        for(Actor actor: actors){
+//            actor.addFilms(this);
+//        }
+//    }
 
     public String getTitle() {
         return title;
@@ -66,10 +78,6 @@ public class Film {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setFilmId(long filmId) {
-        this.filmId = filmId;
     }
 
     public void setActors(List<Actor> actors) {

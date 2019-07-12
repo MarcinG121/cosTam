@@ -1,50 +1,105 @@
 package com.dvd.Dvd.controler;
 
 
-import com.dvd.Dvd.Servises.ActorRepository;
-import com.dvd.Dvd.Servises.FilmRepository;
+import com.dvd.Dvd.dto.ActorDTO;
 import com.dvd.Dvd.model.Actor;
-import com.dvd.Dvd.model.Category;
-import com.dvd.Dvd.model.Film;
+import com.dvd.Dvd.servises.*;
+import com.dvd.Dvd.controler.errors.FilmNotFoundException;
 import com.dvd.Dvd.dto.FilmDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
+import com.dvd.Dvd.model.Film;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
-@RequestMapping("/welcome")
 public class FilmController {
 
     @Autowired
-    FilmRepository service;
+    FilmRepository repository;
     @Autowired
     ActorRepository actorRepository;
 
-    @RequestMapping
-    public String helloWorld() {
+    @GetMapping("/films/{id}")
+    public FilmDTO getFilmById(@PathVariable(required = true) long id) {
 
-        String message = "Hello World";
-        JSONObject jo = new JSONObject(
-                "{\"city\":\"chicago\",\"name\":\"jon doe\",\"age\":\"22\"}"
-        );
+        Film film = repository.findById(id).orElseThrow(() -> new FilmNotFoundException("Film not found"));
 
-        return jo.toString();
+        return new FilmDTO(film);
     }
 
-    @GetMapping("/{id}")
-    public FilmDTO getById(@PathVariable(required = true) long id) throws Throwable{
+    @GetMapping("films/info/{id}")
+    public Optional<FilmData> getLessInfoAboutFilmById(@PathVariable(required = true) long id) {
 
-        FilmDTO filmDTO = new FilmDTO(service.findById(id));
-
-        return filmDTO;
+        return repository.findByFilmId(id);
     }
+
+    @GetMapping("films/{id}/actors")
+    public List<ActorName> getActorById(@PathVariable(required = true) long id) {
+
+        return actorRepository.findByFilms_filmId(id);
+    }
+
+    @GetMapping("/films")
+    @ResponseBody
+    public List<FilmData> getFilmByParameters(@RequestParam(required = false) String title) {
+
+
+        return repository.findByTitleLikeIgnoreCase(title + "%");
+    }
+
+//    @GetMapping("/films")
+//    @ResponseBody
+//    public List<FilmData> getFilmByParametersTrying(@RequestParam(required = false) String title) {
+//
+//
+//        return repository.findByParameterTitle(title);
+//    }
+
+    @GetMapping("/films/actors")
+    @ResponseBody
+    public List<ActorName> getFilmByParametersTryingName(@RequestParam(required = false, name = "name") String namePatern) {
+
+        return actorRepository.findByParameterName(namePatern);
+    }
+
+    @GetMapping("/films/fullInfo")
+    @ResponseBody
+    public List<FullFilm> getFilmByParametersTryingFull(@RequestParam(required = false) String title, @RequestParam(required = false) String name) {
+
+        return repository.findByParameter(title, name);
+    }
+
+    @PutMapping("/films/{id}")
+    @ResponseBody
+    public ResponseEntity<Object> createFilm(@RequestBody FilmDTO requestBody, @PathVariable long id){
+
+        Film film = repository.findById(id).orElseThrow(() -> new FilmNotFoundException("Film not found"));
+
+        film.setTitle(requestBody.getTitle());
+        film.setDescription(requestBody.getDescription());
+
+        repository.save(film);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/films/{id}/actors")
+    @ResponseBody
+    public ResponseEntity<Object> updateFilmActors(@RequestBody ActorDTO requestBody, @PathVariable long id){
+
+        Film film = repository.findById(id).orElseThrow(() -> new FilmNotFoundException("Film not found"));
+
+        Actor actor = new Actor(requestBody.getName(), requestBody.getLastName(), film);
+        film.addActor(actor);
+        actorRepository.save(actor);
+        repository.save(film);
+
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
 
