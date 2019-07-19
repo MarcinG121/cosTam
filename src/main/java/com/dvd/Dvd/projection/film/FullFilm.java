@@ -1,4 +1,4 @@
-package com.dvd.Dvd.servises;
+package com.dvd.Dvd.projection;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
@@ -8,7 +8,6 @@ import javax.persistence.OrderColumn;
 import java.util.List;
 
 public interface FullFilm {
-
 
     String getDescription();
     String getLastName();

@@ -1,6 +1,5 @@
-package com.dvd.Dvd.servises;
+package com.dvd.Dvd.projection;
 
-import org.springframework.beans.factory.annotation.Value;
 
 public interface ActorName {
 
