@@ -2,15 +2,17 @@ package com.dvd.Dvd.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "actor")
 public class Actor {
 
@@ -25,13 +27,6 @@ public class Actor {
     @JsonBackReference
     private List<Film> films;
 
-    public Actor(long actorId, String name, String lastName, List<Film> flims) {
-        this.actorId = actorId;
-        this.name = name;
-        this.lastName = lastName;
-        this.films = flims;
-    }
-
     public Actor(String name, String lastName, Film film) {
         this.name = name;
         this.lastName = lastName;
@@ -42,45 +37,4 @@ public class Actor {
     public void addFilms(Film film){
         this.films.add(film);
     }
-//    @PostPersist
-//    public void populateFilms() {
-//        for (Film film : films){
-//            film.addActor(this);
-//        }
-//    }
-
-
-
-    public long getActorId() {
-        return actorId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public List<Film> getFilms() {
-        return films;
-    }
-
-    public void setActorId(long actorId) {
-        this.actorId = actorId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setFilms(List<Film> films) {
-        this.films = films;
-    }
-
 }

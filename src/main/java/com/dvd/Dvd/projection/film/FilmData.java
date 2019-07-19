@@ -1,4 +1,4 @@
-package com.dvd.Dvd.projection;
+package com.dvd.Dvd.projection.film;
 
 import java.util.List;
 

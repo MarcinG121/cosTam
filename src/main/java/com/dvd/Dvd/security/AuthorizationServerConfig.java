@@ -1,4 +1,4 @@
-package com.dvd.Dvd;
+package com.dvd.Dvd.security;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Qualifier;

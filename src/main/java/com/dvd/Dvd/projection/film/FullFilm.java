@@ -1,4 +1,4 @@
-package com.dvd.Dvd.projection;
+package com.dvd.Dvd.projection.film;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;

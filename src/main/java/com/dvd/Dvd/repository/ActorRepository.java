@@ -1,7 +1,7 @@
 package com.dvd.Dvd.repository;
 
 import com.dvd.Dvd.model.Actor;
-import com.dvd.Dvd.servises.ActorName;
+import com.dvd.Dvd.projection.actor.ActorName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

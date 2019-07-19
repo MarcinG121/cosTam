@@ -1,4 +1,4 @@
-package com.dvd.Dvd.security;
+package com.dvd.Dvd.configuration;
 
 
 //import org.springframework.context.annotation.Bean;

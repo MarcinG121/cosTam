@@ -1,4 +1,4 @@
-package com.dvd.Dvd.servises.repositories;
+package com.dvd.Dvd.repository;
 
 import com.dvd.Dvd.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
